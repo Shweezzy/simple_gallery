@@ -28,6 +28,16 @@
       hide-delimiter-background
       hide-delimiters
     >
+      <template v-slot:prev="{ on, attrs }">
+        <v-btn plain large icon @click="prev" v-bind="attrs" v-on="on"
+          >&lt;</v-btn
+        >
+      </template>
+      <template v-slot:next="{ on, attrs }">
+        <v-btn plain large icon @click="next" v-bind="attrs" v-on="on"
+          >&gt;</v-btn
+        >
+      </template>
       <v-carousel-item v-for="slide in carouselData" :key="slide.id">
         <v-sheet height="100%" tile>
           <v-row class="fill-height" align="center" justify="center">
@@ -40,7 +50,13 @@
         </v-sheet>
       </v-carousel-item>
     </v-carousel>
-    <CarouselItem :carouselData="carouselData" />
+    <div class="carousel__item">
+      <CarouselItem
+        v-for="slide in carouselData"
+        :key="slide.id"
+        :carouselData="slide"
+      />
+    </div>
   </div>
 </template>
 
@@ -58,7 +74,23 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      counter: 0,
+    };
+  },
+  methods: {
+    next() {
+      let listOfImages = document.querySelectorAll(".img");
+      this.counter++;
+      listOfImages[this.counter - 1].style.filter = `brightness(${"40%"})`;
+      listOfImages[this.counter].style.filter = `brightness(${"100%"})`;
+    },
+    prev() {
+      let listOfImages = document.querySelectorAll(".img");
+      this.counter--;
+      listOfImages[this.counter + 1].style.filter = `brightness(${"40%"})`;
+      listOfImages[this.counter].style.filter = `brightness(${"100%"})`;
+    },
   },
 };
 </script>
@@ -81,5 +113,10 @@ export default {
 .v-btn--icon.v-size--default .v-icon,
 .v-btn--fab.v-size--default .v-icon {
   display: none;
+}
+.carousel__item {
+  display: flex;
+  width: 933px;
+  margin: auto;
 }
 </style>
