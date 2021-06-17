@@ -1,18 +1,13 @@
 <template>
   <div class="images__container">
-    <img
-      class="img"
-      :id="carouselData.id"
-      :src="require('../../assets/images/' + carouselData.image)"
-      alt=""
-    />
+    <img class="img" :src="responseData.url_l" alt="" />
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    carouselData: {
+    responseData: {
       type: Object,
       default: () => {},
     },
@@ -30,13 +25,14 @@ export default {
 }
 
 .images__container img {
-  width: 73.2px;
-  margin: 10px;
-
+  width: 65px;
+  height: 60px;
+  margin-right: 8.4px;
+  margin-top: 5px;
   filter: brightness(40%);
 }
 .images__container:hover {
   filter: brightness(100%);
-  transform: scale(1.3);
+  transform: scale(1.1);
 }
 </style>

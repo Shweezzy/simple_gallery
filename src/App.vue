@@ -1,30 +1,47 @@
 <template>
-  <v-app id="app"><Carousel :carouselData="sliderItems" /> </v-app>
+  <v-app>
+    <Carousel :response="responseData" />
+  </v-app>
 </template>
 
 <script>
 import Carousel from "./components/CarouselVuetify/Carousel.vue";
+import config from "../config";
+import axios from "axios";
+
 export default {
-  name: "App",
-
+  name: "home",
   components: { Carousel },
-
-  data: () => ({
-    sliderItems: [
-      { id: 0, image: "0.jpg" },
-      { id: 1, image: "1.jpg" },
-      { id: 2, image: "2.jpg" },
-      { id: 3, image: "3.jpg" },
-      { id: 4, image: "4.jpg" },
-      { id: 5, image: "5.jpg" },
-      { id: 6, image: "6.jpg" },
-      { id: 7, image: "7.jpg" },
-      { id: 8, image: "8.jpg" },
-      { id: 9, image: "9.jpg" },
-    ],
-  }),
+  data() {
+    return {
+      loading: true,
+      responseData: [],
+    };
+  },
+  mounted() {
+    this.fetchImages();
+  },
+  methods: {
+    fetchImages() {
+      axios
+        .get("https://api.flickr.com/services/rest", {
+          params: {
+            method: "flickr.photosets.getPhotos",
+            api_key: config.api_key,
+            extras: "url_l",
+            page: 1,
+            photoset_id: "72157719420687933",
+            format: "json",
+            nojsoncallback: 1,
+            per_page: 30,
+          },
+        })
+        .then((response) => {
+          console.log(response.data.photoset);
+          this.responseData = response.data.photoset.photo;
+        });
+    },
+  },
 };
 </script>
-
-<style scoped>
-</style>
+<style scoped></style>;
