@@ -1,17 +1,20 @@
 <template>
   <v-app>
-    <Carousel :response="responseData" />
+    <Lingallery :response="responseData" />
+    <!-- <Carousel :response="responseData" /> -->
   </v-app>
 </template>
 
 <script>
-import Carousel from "./components/CarouselVuetify/Carousel.vue";
+import Lingallery from "./components/Lingallery.vue";
+
+// import Carousel from "./components/CarouselVuetify/Carousel.vue";
 import config from "../config";
 import axios from "axios";
 
 export default {
   name: "home",
-  components: { Carousel },
+  components: { Lingallery },
   data() {
     return {
       loading: true,

@@ -25,19 +25,20 @@
       </v-carousel-item>
     </v-carousel>
     <div class="carousel__item">
-      <CarouselItem v-for="img in response" :key="img.id" :responseData="img" />
+      <CarouselItem :responseData="response" />
     </div>
-    <input type="file" />
-    <v-btn></v-btn>
+    <Buttons :responseData="response" />
   </div>
 </template>
 
 <script>
 import CarouselItem from "./Carousel-item.vue";
+import Buttons from "../Buttons.vue";
 
 export default {
   components: {
     CarouselItem,
+    Buttons,
   },
   props: {
     response: {
@@ -48,20 +49,23 @@ export default {
   data() {
     return {
       counter: 0,
+      listOfImages: [],
     };
   },
   methods: {
-    next() {
+    next(e) {
+      console.dir(e.target);
       let listOfImages = document.querySelectorAll(".img");
       this.counter++;
       listOfImages[this.counter - 1].style.filter = `brightness(${"40%"})`;
-      listOfImages[this.counter].style.filter = `brightness(${"100%"})`;
+      listOfImages[this.counter].style.filter = "inherit";
+      console.log(listOfImages);
     },
     prev() {
       let listOfImages = document.querySelectorAll(".img");
       this.counter--;
       listOfImages[this.counter + 1].style.filter = `brightness(${"40%"})`;
-      listOfImages[this.counter].style.filter = `brightness(${"100%"})`;
+      listOfImages[this.counter].style.filter = "inherit";
     },
   },
 };
