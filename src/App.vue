@@ -19,7 +19,11 @@ export default {
     return {
       loading: true,
       responseData: [],
+      previewImage: null,
     };
+  },
+  created() {
+    this.fetchImages();
   },
   mounted() {
     this.fetchImages();
