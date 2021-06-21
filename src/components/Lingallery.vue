@@ -1,21 +1,24 @@
 <template>
   <div @click="currentPage">
     <div @click="deleteImage">
-      <lingallery
-        :iid.sync="currentId"
-        :accentColor="'#fc0000'"
-        :items="pageOfItems"
-      />
-      <jw-pagination
-        :pageSize="9"
-        :items="carouselData"
-        @changePage="onChangePage"
-        :labels="customLabels"
-        :disableDefaultStyles="true"
-      ></jw-pagination>
+      <div @click="controlStyles">
+        <lingallery
+          :addons="{ enableLargeView: true }"
+          :disableImageClick="true"
+          :accentColor="'#fc0000'"
+          :items="pageOfItems"
+        />
+        <jw-pagination
+          :pageSize="9"
+          :items="carouselData"
+          @changePage="onChangePage"
+          :labels="customLabels"
+          :disableDefaultStyles="true"
+        ></jw-pagination>
+      </div>
     </div>
-    <h1 class="numberPages">{{ counter }}/{{ numberOfPages }}</h1>
-    <Buttons @updateCounter="update" :response="responseData" />
+    <h1 class="numberPages">{{ pageCounter }}/{{ numberOfPages }}</h1>
+    <Buttons @updateCounter="newCounter" :response="responseData" />
   </div>
 </template>
 
@@ -41,12 +44,12 @@ export default {
     return {
       responseData: [],
       pageOfItems: [],
-      counter: 1,
+      pageCounter: 1,
       customLabels,
-      currentId: null,
+      rightControl: null,
+      leftControl: null,
     };
   },
-
   computed: {
     carouselData() {
       if (this.responseData.length === 0) {
@@ -79,7 +82,7 @@ export default {
             this.responseData[i].alt
           ) {
             this.responseData.splice(i, 1);
-            this.counter = 1;
+            this.pageCounter = 1;
           }
         }
       }
@@ -87,14 +90,32 @@ export default {
     currentPage(e) {
       if (e.target.classList.contains("page-link")) {
         if (e.target.textContent === ">") {
-          this.counter < this.numberOfPages ? this.counter++ : this.counter;
+          this.pageCounter < this.numberOfPages
+            ? this.pageCounter++
+            : this.pageCounter;
         } else {
-          this.counter > 1 ? this.counter-- : this.counter;
+          this.pageCounter > 1 ? this.pageCounter-- : this.pageCounter;
         }
       }
     },
-    update(data) {
-      this.counter = data;
+    newCounter(data) {
+      this.pageCounter = data;
+    },
+    //Styles
+    controlStyles(e) {
+      if (e.target.nodeName === "SPAN" || e.target.nodeName === "IMG") {
+        let imageDivs = document.querySelector(
+          ".lingallery_thumbnails_content"
+        );
+        //Thumbnails
+        imageDivs.children.forEach((e) => {
+          if (e.firstChild.style.borderColor === "rgb(252, 0, 0)") {
+            e.style.filter = "inherit";
+          } else {
+            e.style.filter = "brightness(40%)";
+          }
+        });
+      }
     },
   },
 };
@@ -118,16 +139,18 @@ export default {
   height: 380px;
   width: fit-content;
 }
-.lingallery_thumbnails_content_elem img {
-  filter: brightness(70%);
-  outline-offset: 0px !important;
-  /* border: 0 !important; */
+.lingallery_thumbnails_content_elem {
+  filter: brightness(40%);
   transition: 0.5s;
-  -webkit-box-shadow: 1px 1px 50px -19px #000000;
-  box-shadow: 1px 1px 50px -19px #000000;
 }
-.lingallery_thumbnails_content_elem img:hover {
+.lingallery_thumbnails_content_elem:first-child {
   filter: inherit;
+}
+.lingallery_thumbnails_content_elem:hover {
+  filter: inherit !important;
+}
+.lingallery_thumbnails_content_elem img {
+  border: 0 !important;
 }
 .pagination li.first,
 li.last,
@@ -153,12 +176,23 @@ li.next {
   display: block;
   position: absolute;
   margin-right: -55px;
+  height: 0;
+  margin-top: 185px;
 }
 
 .lingalleryContainer[data-v-40681078] .lingallery figure a.control.left {
   display: block;
   position: absolute;
   margin-left: -55px;
+  height: 0;
+  margin-top: 185px;
+}
+.lingallery .lingallery_caption {
+  opacity: 0;
+  transition: 0.5s;
+}
+.lingallery:hover .lingallery_caption {
+  opacity: 1;
 }
 .page-link {
   outline: 0;

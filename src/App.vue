@@ -25,9 +25,6 @@ export default {
   created() {
     this.fetchImages();
   },
-  mounted() {
-    this.fetchImages();
-  },
   methods: {
     fetchImages() {
       axios
@@ -44,7 +41,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data.photoset);
           this.responseData = response.data.photoset.photo;
         });
     },

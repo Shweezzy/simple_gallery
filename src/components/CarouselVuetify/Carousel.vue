@@ -54,18 +54,10 @@ export default {
   },
   methods: {
     next(e) {
-      console.dir(e.target);
-      let listOfImages = document.querySelectorAll(".img");
       this.counter++;
-      listOfImages[this.counter - 1].style.filter = `brightness(${"40%"})`;
-      listOfImages[this.counter].style.filter = "inherit";
-      console.log(listOfImages);
     },
     prev() {
-      let listOfImages = document.querySelectorAll(".img");
       this.counter--;
-      listOfImages[this.counter + 1].style.filter = `brightness(${"40%"})`;
-      listOfImages[this.counter].style.filter = "inherit";
     },
   },
 };

@@ -29,8 +29,8 @@ export default {
     };
   },
   methods: {
-    uploadFlickrImage() {
-      axios
+    async uploadFlickrImage() {
+      await axios
         .get(
           `https://api.flickr.com/services/rest/?method=flickr.photos.search&format=json&nojsoncallback=1&api_key=${config.api_key}&extras=url_l&text=nature`
         )
@@ -48,7 +48,6 @@ export default {
       this.$emit("updateCounter", 1);
     },
     uploadLocalImage(e) {
-      this.$emit("updateCounter", 1);
       const image = e.target.files[0];
       const reader = new FileReader();
       reader.readAsDataURL(image);
@@ -61,6 +60,8 @@ export default {
           alt: Math.random(),
         });
       };
+
+      this.$emit("updateCounter", 1);
     },
   },
 };
