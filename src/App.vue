@@ -28,9 +28,10 @@ export default {
   methods: {
     fetchImages() {
       axios
+        //Update this link
         .get("https://api.flickr.com/services/rest", {
           params: {
-            method: "flickr.photosets.getPhotos",
+            method: "flickr.photosets.getPhtos",
             api_key: config.api_key,
             extras: "url_l",
             page: 1,
